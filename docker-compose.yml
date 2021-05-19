@@ -1,0 +1,90 @@
+version: '3.9'
+
+services: 
+
+    api:
+        container_name: backend_api_container
+        build:
+            context: ./backend/api/
+            dockerfile: ./Dockerfile
+        image: milk.api.dev
+        volumes:
+            - ./backend/api/src:/usr/src
+        stdin_open: true
+        tty: true
+        networks:
+            - backend_network
+        environment:
+            - CHOKIDAR_USEPOLLING=true
+            - DJANGO_SETTINGS_MODULE=milk.local_settings
+        depends_on: 
+            - db
+    
+    backend_nginx:
+        container_name: backend_nginx_container
+        build:
+            context: .
+            dockerfile: ./backend/nginx/Dockerfile.dev
+        image: milk.backend.nginx.dev
+        volumes:
+            - ./backend/api/src/static:/static
+        ports:
+            - 8080:80
+        depends_on:
+            - api
+        networks:
+            - backend_network
+
+    db:
+        container_name: db_container
+        build:
+            context: ./mysql
+            dockerfile: Dockerfile
+        image: milk.db.dev
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: 'root'
+            TZ: 'Asia/Tokyo'
+        volumes:
+            - mysql.dev.db.volume:/var/lib/mysql
+            - ./mysql/init:/docker-entrypoint-initdb.d
+        networks:
+            - backend_network
+    
+    front-app:
+        container_name: frontend_app_container
+        build:
+            context: ./frontend/front-app/
+            dockerfile: Dockerfile
+        image: milk.app.dev
+        volumes:
+            - ./frontend/front-app/app:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - 3000:3000
+        networks:
+            - frontend_network
+
+    frontend_nginx:
+        container_name: frontend_nginx_container
+        build:
+            context: ./frontend/nginx/
+            dockerfile: Dockerfile.dev
+        image: milk.frontend.nginx.dev
+        ports:
+            - 80:80
+        depends_on:
+            - front-app
+        networks:
+            - frontend_network
+
+networks:
+    backend_network:
+        driver: bridge
+    frontend_network:
+        driver: bridge
+
+volumes:
+    mysql.dev.db.volume:
+        name: mysql.dev.db.volume

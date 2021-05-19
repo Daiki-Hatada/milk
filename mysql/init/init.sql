@@ -1,0 +1,5 @@
+CREATE DATABASE IF NOT EXISTS milk CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+CREATE USER IF NOT EXISTS 'supermilkchan'@'%' IDENTIFIED BY 'oh';
+GRANT ALL PRIVILEGES ON milk.* TO 'supermilkchan'@'%';
+
+FLUSH PRIVILEGES;

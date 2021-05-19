@@ -1,0 +1,6 @@
+FROM nginx:1.19.1-alpine
+RUN rm /etc/nginx/conf.d/default.conf 
+COPY ./backend/nginx/default.dev.conf /etc/nginx/conf.d
+COPY ./backend/api/src/static /static
+# CMD /usr/sbin/nginx -g 'daemon off;' -c /etc/nginx/conf.d/default.dev.conf
+EXPOSE 80
