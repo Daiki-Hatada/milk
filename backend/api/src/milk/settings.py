@@ -27,12 +27,12 @@ env.read_env('.env')
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)g66pr%2j!fi3ptf*k&@o%qp#fopvhg0jg)_^l8x26xgjn)jc9'
+SECRET_KEY = env.get_value('SECRET_KEY', str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.get_value('DEBUG', bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.get_value('ALLOWED_HOSTS', list)
 
 
 # Application definition
@@ -90,14 +90,7 @@ WSGI_APPLICATION = 'milk.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'milk',
-        'USER': 'supermilkchan',
-        'PASSWORD': 'oh',
-        'HOST': 'db',
-        'PORT': '3306',
-    }
+    'default': env.db(),
 }
 
 
