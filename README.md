@@ -41,6 +41,19 @@ Run migration
 Access localhost on your browser
 
 
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file and put it in `backend/api/src/`
+
+`SECRET_KEY`
+
+`DEBUG`
+
+`ALLOWED_HOSTS`
+
+`DATABASE_URL` (This is like `mysql://USER:PASSWORD@HOST:PORT/NAME`)
+
+
 ## Authors
 
 - [@Daiki-Hatada](https://github.com/Daiki-Hatada)
