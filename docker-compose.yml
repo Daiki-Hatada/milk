@@ -47,7 +47,7 @@ services:
             MYSQL_ROOT_PASSWORD: 'root'
             TZ: 'Asia/Tokyo'
         volumes:
-            - mysql.dev.db.volume:/var/lib/mysql
+            - milk.dev.db.volume:/var/lib/mysql
             - ./mysql/init:/docker-entrypoint-initdb.d
         networks:
             - backend_network
@@ -86,5 +86,5 @@ networks:
         driver: bridge
 
 volumes:
-    mysql.dev.db.volume:
-        name: mysql.dev.db.volume
+    milk.dev.db.volume:
+        name: milk.dev.db.volume
